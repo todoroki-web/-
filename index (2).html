@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Храм Введения во храм Пресвятой Богородицы</title>
+    <!-- Font Awesome для иконок соцсетей -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f6f0;
+            color: #2c2c2c;
+            line-height: 1.6;
+        }
+
+        /* Шапка */
+        .header {
+            background: linear-gradient(rgba(150, 50, 50, 0.9), rgba(100, 30, 30, 0.9)), url('https://via.placeholder.com/1920x300') center/cover no-repeat;
+            color: #fff;
+            padding: 2rem 1rem;
+            text-align: center;
+            border-bottom: 5px solid #d4af37;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header i {
+            margin-right: 8px;
+            color: #d4af37;
+        }
+
+        /* Навигация (вкладки) */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .tab-button {
+            padding: 1rem 1.8rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #4a2c2c;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+        }
+
+        .tab-button:hover {
+            background-color: #f0e6d2;
+            border-bottom-color: #b8860b;
+        }
+
+        .tab-button.active {
+            border-bottom-color: #8b4513;
+            color: #8b4513;
+            background-color: #fdf8f0;
+        }
+
+        /* Контейнер контента */
+        .content {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fade 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fade {
+            from { opacity: 0.3; }
+            to { opacity: 1; }
+        }
+
+        /* Карточки и блоки */
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            border-left: 8px solid #b8860b;
+        }
+
+        .card h2 {
+            color: #6b3e3e;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e0c9a6;
+            padding-bottom: 0.5rem;
+        }
+
+        .card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 1rem 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .image-grid img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .priest-card {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .priest-card img {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 5px solid #d4af37;
+        }
+
+        .priest-info {
+            flex: 1;
+        }
+
+        .priest-info h3 {
+            font-size: 2rem;
+            color: #4a2c2c;
+            margin-bottom: 0.5rem;
+        }
+
+        .priest-info p {
+            margin-bottom: 1rem;
+        }
+
+        /* Соцсети иконки */
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .social-links a {
+            display: inline-block;
+            background-color: #6b3e3e;
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 60px;
+            font-size: 2rem;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .social-links a:hover {
+            background-color: #d4af37;
+            transform: scale(1.1);
+            color: #2c2c2c;
+        }
+
+        /* Форма вопросов */
+        .question-form {
+            background: #faf6f0;
+            padding: 2rem;
+            border-radius: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #4a2c2c;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #c9b6a5;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        .btn {
+            background-color: #8b4513;
+            color: #fff;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #b8860b;
+        }
+
+        /* Расписание */
+        .schedule-item {
+            display: flex;
+            align-items: baseline;
+            padding: 0.8rem 0;
+            border-bottom: 1px dashed #e0c9a6;
+        }
+
+        .schedule-item .day {
+            font-weight: 700;
+            width: 140px;
+            color: #6b3e3e;
+        }
+
+        .schedule-item .time {
+            width: 120px;
+            color: #8b4513;
+        }
+
+        .schedule-item .desc {
+            flex: 1;
+        }
+
+        /* Новости */
+        .news-item {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e0c9a6;
+        }
+
+        .news-item h3 {
+            color: #4a2c2c;
+            margin-bottom: 0.5rem;
+        }
+
+        .news-date {
+            color: #8b4513;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Подвал */
+        .footer {
+            background-color: #2c1e1e;
+            color: #e0d6c0;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-top: 5px solid #d4af37;
+        }
+
+        .footer p {
+            margin: 0.3rem 0;
+        }
+
+        .footer i {
+            color: #d4af37;
+            margin: 0 5px;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .tab-button {
+                padding: 0.8rem 1rem;
+                font-size: 0.9rem;
+            }
+            .priest-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            .schedule-item {
+                flex-wrap: wrap;
+            }
+            .schedule-item .day, .schedule-item .time {
+                width: auto;
+                margin-right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ШАПКА -->
+    <header class="header">
+        <h1><i class="fas fa-church"></i> Храм Введения во храм Пресвятой Богородицы</h1>
+        <p><i class="fas fa-map-marker-alt"></i> Введенская слобода, Зиновьева улица, 9</p>
+        <p><i class="fas fa-cross"></i> Престольные праздники: Введение во храм Пресвятой Богородицы (4 декабря)
+       Спас Нерукотворный (29 августа) </p>
+    </header>
+
+    <!-- НАВИГАЦИЯ (ВКЛАДКИ) -->
+    <nav class="tabs">
+        <button class="tab-button active" data-tab="schedule">Расписание</button>
+        <button class="tab-button" data-tab="news">Новости</button>
+        <button class="tab-button" data-tab="priesthood">Священство</button>
+        <button class="tab-button" data-tab="school">Воскресная школа</button>
+        <button class="tab-button" data-tab="social">Соцсети</button>
+        <button class="tab-button" data-tab="questions">Вопросы</button>
+    </nav>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main class="content">
+
+        <!-- Вкладка: РАСПИСАНИЕ -->
+        <div id="schedule" class="tab-content active">
+            <div class="card">
+                <h2><i class="fas fa-calendar-alt"></i> Расписание богослужений</h2>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Church_in_Vvedenskaya_Sloboda_08-2016.jpg/1280px-Church_in_Vvedenskaya_Sloboda_08-2016.jpg" alt="Храм" style="width:100%; margin-bottom:2rem;">
+                
+                <div class="schedule-item">
+                    <span class="day">Суббота</span>
+                    <span class="time">08:30</span>
+                    <span class="desc">Литургия, панихида</span>
+                </div>
+                <div class="schedule-item">
+                    <span class="day">Суббота</span>
+                    <span class="time">16:00</span>
+                    <span class="desc">Всенощное бдение</span>
+                </div>
+                <div class="schedule-item">
+                    <span class="day">Воскресенье</span>
+                    <span class="time">08:00</span>
+                    <span class="desc">Литургия</span>
+                </div>
+                <div class="schedule-item">
+                    <span class="day">Пятница</span>
+                    <span class="time">08:00</span>
+                    <span class="desc">Литургия преждеосвященных даров</span>
+                </div>
+                <div class="schedule-item">
+                    <span class="day">Воскресенье</span>
+                    <span class="time">16:00</span>
+                    <span class="desc">Пассия</span>
+                </div>
+
+                <p style="margin-top:2rem;"><i class="fas fa-info-circle"></i> Исповедь во время утренних богослужений. По окончании Литургии — требы.</p>
+                <!-- Картинка расписания (можно заменить) -->
+                <img src="https://ir.ozone.ru/s3/multimedia-a/6547431598.jpg" alt="Икона Введения" style="margin-top:1rem;">
+            </div>
+        </div>
+
+        <!-- Вкладка: НОВОСТИ -->
+        <div id="news" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-newspaper"></i> Новости прихода</h2>
+                
+                <div class="news-item">
+                    <h3>Начало занятий воскресной школы</h3>
+                    <div class="news-date">15 сентября 2025</div>
+                    <img src="https://via.placeholder.com/400x200?text=Воскресная+школа" alt="Воскресная школа" style="float:left; margin-right:1rem; max-width:200px;">
+                    <p>С 1 октября открывается набор в воскресную школу для детей от 5 до 14 лет. Запись у старосты или через форму "Вопросы".</p>
+                    <div style="clear:both;"></div>
+                </div>
+
+                <div class="news-item">
+                    <h3>Ремонт иконостаса</h3>
+                    <div class="news-date">10 сентября 2025</div>
+                    <img src="https://via.placeholder.com/400x200?text=Иконостас" alt="Иконостас" style="float:left; margin-right:1rem; max-width:200px;">
+                    <p>Завершена реставрация центральных икон. Благодарим всех жертвователей. Фотографии обновлённого иконостаса можно посмотреть в галерее.</p>
+                    <div style="clear:both;"></div>
+                </div>
+                <!-- Дополнительная картинка -->
+                <div class="image-grid">
+                    <img src="https://via.placeholder.com/300x200?text=Крещение" alt="Крещение">
+                    <img src="https://via.placeholder.com/300x200?text=Венчание" alt="Венчание">
+                    <img src="https://via.placeholder.com/300x200?text=Хор" alt="Хор">
+                </div>
+            </div>
+        </div>
+
+        <!-- Вкладка: СВЯЩЕНСТВО (третья) -->
+        <div id="priesthood" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-user-tie"></i> Настоятель храма</h2>
+                <div class="priest-card">
+                    <img src="https://via.placeholder.com/250x250?text=Иерей+Вячеслав" alt="Священник">
+                    <div class="priest-info">
+                        <h3>Иерей Вячеслав Лихачев</h3>
+                        <p><strong>Образование:</strong> Казанская духовная семинария</p>
+                        <p>Отец Вячеслав служит в храме с 2021 года, еженедельно проводит богослужения.</p>
+                    </div>
+                </div>
+                <!-- Фотография храма / священства -->
+                <img src="https://via.placeholder.com/800x300?text=Служение+священника" alt="Служение" style="margin-top:2rem;">
+            </div>
+        </div>
+
+        <!-- Вкладка: ВОСКРЕСНАЯ ШКОЛА -->
+        <div id="school" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-child"></i> Воскресная школа</h2>
+                <img src="https://via.placeholder.com/800x300?text=Дети+в+храме" alt="Воскресная школа">
+                <p style="margin:1.5rem 0;">При храме действует воскресная школа для детей и взрослых. Занятия проходят по воскресеньям после поздней Литургии.</p>
+                <div class="image-grid">
+                    <img src="https://via.placeholder.com/300x200?text=Урок" alt="Урок">
+                    <img src="https://via.placeholder.com/300x200?text=Поделки" alt="Поделки">
+                    <img src="https://via.placeholder.com/300x200?text=Праздник" alt="Праздник">
+                </div>
+                <h3>Расписание занятий:</h3>
+                <ul style="margin-left:2rem;">
+                    <li><strong>Детская группа (5-10 лет):</strong> 11:30 – 13:00 (Закон Божий, творчество)</li>
+                    <li><strong>Подростки (11-16 лет):</strong> 13:00 – 14:30 (Священное Писание, хор)</li>
+                    <li><strong>Взрослые:</strong> 14:30 – 16:00 (Библейский кружок)</li>
+                </ul>
+                <p>Запись в школу через форму "Вопросы" или у преподавателей после службы.</p>
+            </div>
+        </div>
+
+        <!-- Вкладка: СОЦСЕТИ -->
+        <div id="social" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-share-alt"></i> Мы в соцсетях</h2>
+                <p>Подписывайтесь на наши страницы, чтобы быть в курсе последних новостей и событий.</p>
+                <div class="social-links">
+                    <a href="#" target="_blank"><i class="fab fa-vk"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-telegram"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-odnoklassniki"></i></a>
+                </div>
+                <!-- Картинка - иконки или фото храма -->
+                <img src="https://via.placeholder.com/600x200?text=Присоединяйтесь+к+нам" alt="Соцсети" style="margin-top:2rem;">
+            </div>
+        </div>
+
+        <!-- Вкладка: ВОПРОСЫ -->
+        <div id="questions" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-question-circle"></i> Задайте вопрос священнику</h2>
+                <img src="https://via.placeholder.com/800x200?text=Священник+отвечает" alt="Вопросы">
+                <p>Вы можете написать свой вопрос настоятелю или задать его лично после службы. Заполните форму, и мы ответим вам в ближайшее время.</p>
+                
+                <div class="question-form">
+                    <form id="questionForm">
+                        <div class="form-group">
+                            <label for="name">Ваше имя *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email для ответа *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="question">Вопрос *</label>
+                            <textarea id="question" name="question" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">Отправить вопрос</button>
+                    </form>
+                    <p style="margin-top:1rem; color:#6b3e3e;"><i class="fas fa-info-circle"></i> Нажимая кнопку, вы соглашаетесь на обработку персональных данных.</p>
+                </div>
+                <!-- Картинка храма -->
+                <img src="https://via.placeholder.com/600x200?text=Храм+Введения" alt="Храм" style="margin-top:2rem;">
+            </div>
+        </div>
+    </main>
+
+    <!-- ПОДВАЛ -->
+    <footer class="footer">
+        <p><i class="fas fa-church"></i> Храм Введения во храм Пресвятой Богородицы</p>
+        <p>Введенская слобода, Зиновьева улица, 9</p>
+        <p>Телефон: +7 (952) 042-49-61</p>
+        <p>© 2026 Все права защищены.</p>
+    </footer>
+
+    <!-- СКРИПТ ПЕРЕКЛЮЧЕНИЯ ВКЛАДОК И ОТПРАВКА В TELEGRAM -->
+    <script>
+        // Переключение табов
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                button.classList.add('active');
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // ========== TELEGRAM БОТ НАСТРОЕН ==========
+        const BOT_TOKEN = '8237172002:AAFBsaNaU_rw3K1KoXPqxxE_Z8Iabu4f2xk';
+        const CHAT_ID = '5924380881';
+
+        // Обработка формы вопросов с отправкой в Telegram
+        document.getElementById('questionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Получаем данные из формы
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const question = document.getElementById('question').value.trim();
+            
+            if (!name || !email || !question) {
+                alert('Пожалуйста, заполните все поля.');
+                return;
+            }
+            
+            // Формируем сообщение для Telegram
+            const message = `🕯️ НОВЫЙ ВОПРОС В ХРАМ\n\n👤 Имя: ${name}\n📧 Email: ${email}\n❓ Вопрос:\n${question}`;
+            
+            // Кнопка отправки (показываем, что процесс идёт)
+            const submitBtn = document.querySelector('#questionForm .btn');
+            const originalText = submitBtn.innerText;
+            submitBtn.innerText = 'Отправка...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Отправляем запрос к Telegram API
+                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.ok) {
+                    alert('✅ Вопрос отправлен! Священник ответит вам на email в ближайшее время.');
+                    this.reset(); // очищаем форму
+                } else {
+                    console.error('Telegram error:', result);
+                    alert('❌ Ошибка отправки. Пожалуйста, попробуйте позже или позвоните по телефону.');
+                }
+            } catch (error) {
+                console.error('Network error:', error);
+                alert('❌ Ошибка соединения. Проверьте интернет или попробуйте позже.');
+            } finally {
+                submitBtn.innerText = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+  </html>
