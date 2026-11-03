@@ -13,7 +13,6 @@ GREEN = '#64d6a5'
 
 CATS = ['ОРФОГРАФИЯ', 'ЧАСТИ РЕЧИ', 'ЛЕКСИКА', 'ФРАЗЕОЛОГИЯ', 'ПУНКТУАЦИЯ']
 
-# Each category has ten questions, from 100 to 1000 points.
 Q = [
     [
         ('Вставьте букву: соб..рать портфель.', 'и'), ('Как пишется: пр..красный?', 'прекрасный'),
@@ -101,7 +100,7 @@ class Game:
         self.projector.configure(bg=BG)
         self.projector.geometry('1200x800+1000+0')
         
-        # ЗАЩИТА: Перехватываем нажатие на крестик, чтобы окно просто скрывалось
+        # Перехватываем крестик
         self.projector.protocol("WM_DELETE_WINDOW", self.close_projector)
         
         self.p_full = False
@@ -109,11 +108,10 @@ class Game:
         self.make_start()
 
     def close_projector(self):
-        # Скрываем окно, а не удаляем из памяти
+        # Прячем окно, а не убиваем
         self.projector.withdraw()
 
     def clear(self, w):
-        # Безопасная очистка окна от виджетов
         try:
             if w.winfo_exists():
                 for x in w.winfo_children():
@@ -151,7 +149,16 @@ class Game:
 
     def toggle_full(self):
         self.p_full = not self.p_full
-        self.projector.deiconify() # Показываем окно, если оно было скрыто
+        
+        # Если окно проектора было уничтожено - создаем заново
+        if not self.projector.winfo_exists():
+            self.projector = tk.Toplevel(self.r)
+            self.projector.title('СВОЯК — Экран для проектора')
+            self.projector.configure(bg=BG)
+            self.projector.geometry('1200x800+1000+0')
+            self.projector.protocol("WM_DELETE_WINDOW", self.close_projector)
+            
+        self.projector.deiconify() 
         self.projector.attributes('-fullscreen', self.p_full)
 
     def host_board(self):
@@ -175,7 +182,15 @@ class Game:
         tk.Button(self.r, text='ПОКАЗАТЬ ТАБЛО НА ПРОЕКТОРЕ', command=self.projector_board, bg=BLUE, fg=WHITE, padx=15, pady=8).pack(pady=6)
 
     def projector_board(self, status=''):
-        self.projector.deiconify() # Показываем, если скрыто
+        # Если окно проектора было уничтожено - создаем заново
+        if not self.projector.winfo_exists():
+            self.projector = tk.Toplevel(self.r)
+            self.projector.title('СВОЯК — Экран для проектора')
+            self.projector.configure(bg=BG)
+            self.projector.geometry('1200x800+1000+0')
+            self.projector.protocol("WM_DELETE_WINDOW", self.close_projector)
+
+        self.projector.deiconify()
         self.clear(self.projector)
         
         top = tk.Frame(self.projector, bg=BG)
@@ -228,9 +243,17 @@ class Game:
         v = (r + 1) * 100
         sp = SPECIAL.get(key, 'ОБЫЧНЫЙ ВОПРОС')
         
-        # Проектор: только вопрос
-        self.projector.deiconify() # Показываем экран проектора, если он был закрыт
+        # Проектор
+        if not self.projector.winfo_exists():
+            self.projector = tk.Toplevel(self.r)
+            self.projector.title('СВОЯК — Экран для проектора')
+            self.projector.configure(bg=BG)
+            self.projector.geometry('1200x800+1000+0')
+            self.projector.protocol("WM_DELETE_WINDOW", self.close_projector)
+            
+        self.projector.deiconify() 
         self.clear(self.projector)
+        
         self.lab(self.projector, CATS[c] + '  •  ' + str(v) + ' БАЛЛОВ', 22, CYAN, bold=True).pack(pady=35)
         self.lab(self.projector, sp, 17, GOLD, bold=True).pack(pady=12)
         self.lab(self.projector, q, 30, WHITE, bold=True, wraplength=1050, justify='center').pack(expand=True, padx=55)
@@ -283,9 +306,16 @@ class Game:
         w.geometry('780x650')
         q = 'В предложении «Уставший после уроков кот быстро уснул на подоконнике» назовите грамматическую основу.'
         
-        # Проектор видит формулировку
+        if not self.projector.winfo_exists():
+            self.projector = tk.Toplevel(self.r)
+            self.projector.title('СВОЯК — Экран для проектора')
+            self.projector.configure(bg=BG)
+            self.projector.geometry('1200x800+1000+0')
+            self.projector.protocol("WM_DELETE_WINDOW", self.close_projector)
+            
         self.projector.deiconify()
         self.clear(self.projector)
+        
         self.lab(self.projector, 'ФИНАЛЬНЫЙ ВОПРОС', 28, GOLD, bold=True).pack(pady=50)
         self.lab(self.projector, 'ТЕМА: СИНТАКСИС', 20, CYAN, bold=True).pack(pady=15)
         self.lab(self.projector, q, 30, WHITE, bold=True, wraplength=1050, justify='center').pack(expand=True, padx=50)
@@ -319,7 +349,7 @@ class Game:
             self.host_board()
             self.projector_board('ИТОГИ ИГРЫ')
             winner = max(range(3), key=lambda i: self.scores[i])
-            messagebox.showinfo('Итоги', '\\n'.join(f'{self.names[i]}: {self.scores[i]}' for i in range(3)) + f'\\n\\nПобедитель: {self.names[winner]}!')
+            messagebox.showinfo('Итоги', '\n'.join(f'{self.names[i]}: {self.scores[i]}' for i in range(3)) + f'\n\nПобедитель: {self.names[winner]}!')
             
         tk.Button(w, text='ПОДВЕСТИ ИТОГИ', command=finish, bg=GOLD, fg=BG).pack(pady=18)
 
