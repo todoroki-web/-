@@ -3,19 +3,19 @@ import tkinter as tk
 from tkinter import messagebox, simpledialog
 
 # ==========================================
-# 🎨 ЦВЕТОВАЯ СХЕМА (Темно-оранжевый + Темно-зеленый)
+# 🎨 ЦВЕТА: Тёмно-оранжевый + Тёмно-зелёный
 # ==========================================
-BG = '#A84B00'           # Темно-оранжевый фон
-PANEL = '#C55A00'        # Чуть светлее (панели)
-CARD = '#E06B00'         # Еще светлее (карточки вопросов)
-CARD_HOVER = '#F07A10'   # Подсветка карточек
-TEXT_GREEN = '#0B3B0B'   # Темно-зеленый шрифт
-TEXT_HIGHLIGHT = '#052805' # Почти черный зеленый (для акцентов)
-WHITE = '#FFFFFF'        # Для контраста (если понадобится)
+BG = '#8B3A00'           # Тёмно-оранжевый фон
+PANEL = '#A84B00'        # Чуть светлее (панели команд)
+CARD = '#C55A00'         # Светлее (карточки вопросов)
+CARD_USED = '#6E2E00'    # Цвет сыгранных вопросов (затемнение)
+TEXT_GREEN = '#0B3B0B'   # Тёмно-зелёный шрифт (основной)
+TEXT_DARK = '#052805'    # Почти черный зеленый (для акцентов)
 
 FONT = 'Segoe UI'
 
-CATS = ['ОРФОГРАФИЯ', 'ЧАСТИ РЕЧИ', 'ЛЕКСИКА', 'ФРАЗЕОЛОГИЯ', 'ПУНКТУАЦИЯ', 'ШЛАКОБЛОКУНЬ']
+# Оставили только 5 классических рубрик
+CATS = ['ОРФОГРАФИЯ', 'ЧАСТИ РЕЧИ', 'ЛЕКСИКА', 'ФРАЗЕОЛОГИЯ', 'ПУНКТУАЦИЯ']
 
 Q = [
     [
@@ -70,18 +70,6 @@ Q = [
         ('Как называется предложение с одной грамматической основой?', 'Простое'),
         ('Сколько грамматических основ в сложном предложении?', 'Две или более'),
         ('Расставьте знаки: «Я знаю что ты придёшь».', 'Я знаю, что ты придёшь.')
-    ],
-    [
-        ('Из каких двух слов собрали слово «шлакоблокунь»?', 'Шлакоблок + окунь'),
-        ('Как называется соединение частей двух слов в одно новое слово?', 'Контаминация'),
-        ('Составьте шуточное слово из «кот» и «компьютер».', 'Например: котьютер / компокот'),
-        ('«Карусельдь» — какие два слова спрятались внутри?', 'Карусель + сельдь'),
-        ('Какое слово получится из «спорткар» и «карась»?', 'Спорткарась'),
-        ('Придумайте слово-гибрид из «учебник» и «дракон».', 'Например: учебдракон / драконик'),
-        ('Что смешного в слове «шлакоблокунь»?', 'Склеены конец одного и начало другого слова; получается образный гибрид'),
-        ('Как называется новое, необычное слово, созданное автором?', 'Окказионализм'),
-        ('Расшифруйте гибрид «сомолёт»: какие слова соединены?', 'Сом + самолёт'),
-        ('Придумайте гибрид из «запятая» и «лягушка» и объясните его.', 'Любой понятный авторский вариант с объяснением')
     ]
 ]
 
@@ -135,6 +123,7 @@ class Game:
                 return 1
             MONITORENUMPROC = ctypes.WINFUNCTYPE(ctypes.c_int, wintypes.HMONITOR, wintypes.HDC, ctypes.POINTER(wintypes.RECT), wintypes.LPARAM)
             ctypes.windll.user32.EnumDisplayMonitors(0, 0, MONITORENUMPROC(collect), 0)
+            
             if len(monitors) > 1:
                 target = monitors[1]
                 for m in monitors:
@@ -145,9 +134,11 @@ class Game:
                 self.projector.geometry(f'{w}x{h}+{x}+{y}')
                 self.projector.overrideredirect(True) 
             else:
-                self.projector.geometry('1280x720+100+100')
+                # Если один экран, делаем окно на весь экран
+                self.projector.geometry(f'{self.r.winfo_screenwidth()}x{self.r.winfo_screenheight()}+0+0')
+                self.projector.overrideredirect(True)
         except Exception:
-            self.projector.geometry('1280x720+1000+0')
+            self.projector.geometry('1280x720+0+0')
 
     def clear(self, w):
         try:
@@ -166,20 +157,20 @@ class Game:
         f = tk.Frame(self.r, bg=BG)
         f.pack(expand=True)
         
-        self.lab(f, 'С В О Я К', 64, TEXT_HIGHLIGHT, bold=True).pack(pady=(50, 5))
+        self.lab(f, 'С В О Я К', 64, TEXT_DARK, bold=True).pack(pady=(50, 5))
         self.lab(f, 'ПУЛЬТ ВЕДУЩЕГО', 18, TEXT_GREEN, bold=True).pack(pady=(0, 50))
         
         self.entries = []
         for i in range(3):
             frame = tk.Frame(f, bg=PANEL)
             frame.pack(pady=10)
-            self.lab(frame, f'КОМАНДА {i+1}', 14, TEXT_HIGHLIGHT, PANEL, bold=True).pack(side='left', padx=15)
+            self.lab(frame, f'КОМАНДА {i+1}', 14, TEXT_DARK, PANEL, bold=True).pack(side='left', padx=15)
             e = tk.Entry(frame, font=(FONT, 22), width=20, bg=CARD, fg=TEXT_GREEN, insertbackground=TEXT_GREEN, relief='flat', bd=10)
             e.insert(0, self.names[i])
             e.pack(side='left', padx=10)
             self.entries.append(e)
             
-        tk.Button(f, text='НАЧАТЬ ИГРУ', font=(FONT, 20, 'bold'), bg=CARD, fg=TEXT_HIGHLIGHT, activebackground=CARD_HOVER, activeforeground=TEXT_HIGHLIGHT, relief='flat', bd=0, command=self.start, padx=60, pady=15).pack(pady=40)
+        tk.Button(f, text='НАЧАТЬ ИГРУ', font=(FONT, 20, 'bold'), bg=CARD, fg=TEXT_DARK, activebackground=PANEL, activeforeground=TEXT_DARK, relief='flat', bd=0, command=self.start, padx=60, pady=15).pack(pady=40)
         
         self.projector_board('ОЖИДАНИЕ НАЧАЛА ИГРЫ')
 
@@ -193,8 +184,8 @@ class Game:
         
         top = tk.Frame(self.r, bg=BG)
         top.pack(fill='x', padx=40, pady=(20, 10))
-        self.lab(top, 'СВОЯК • ПУЛЬТ ВЕДУЩЕГО', 22, TEXT_HIGHLIGHT, bold=True).pack(side='left')
-        tk.Button(top, text='МОДИФИКАТОРЫ', command=self.modifiers, bg=PANEL, fg=TEXT_GREEN, activebackground=CARD, activeforeground=TEXT_HIGHLIGHT, relief='flat', bd=0, font=(FONT, 12, 'bold'), padx=15, pady=8).pack(side='right')
+        self.lab(top, 'СВОЯК • ПУЛЬТ ВЕДУЩЕГО', 22, TEXT_DARK, bold=True).pack(side='left')
+        tk.Button(top, text='МОДИФИКАТОРЫ', command=self.modifiers, bg=PANEL, fg=TEXT_GREEN, activebackground=CARD, activeforeground=TEXT_DARK, relief='flat', bd=0, font=(FONT, 12, 'bold'), padx=15, pady=8).pack(side='right')
         
         sf = tk.Frame(self.r, bg=BG)
         sf.pack(fill='x', padx=40, pady=15)
@@ -202,12 +193,12 @@ class Game:
             p = tk.Frame(sf, bg=PANEL)
             p.pack(side='left', expand=True, fill='x', padx=8)
             self.lab(p, self.names[i].upper(), 14, TEXT_GREEN, PANEL, True).pack(pady=(15, 5))
-            self.lab(p, str(self.scores[i]), 46, TEXT_HIGHLIGHT, PANEL, True).pack(pady=(0, 15))
+            self.lab(p, str(self.scores[i]), 46, TEXT_DARK, PANEL, True).pack(pady=(0, 15))
             
-        btn_style = {'bg': PANEL, 'fg': TEXT_GREEN, 'activebackground': CARD, 'activeforeground': TEXT_HIGHLIGHT, 'relief': 'flat', 'bd': 0, 'font': (FONT, 14, 'bold'), 'padx': 20, 'pady': 15}
+        btn_style = {'bg': PANEL, 'fg': TEXT_GREEN, 'activebackground': CARD, 'activeforeground': TEXT_DARK, 'relief': 'flat', 'bd': 0, 'font': (FONT, 14, 'bold'), 'padx': 20, 'pady': 15}
         
         tk.Button(self.r, text='ПОКАЗАТЬ ТАБЛО НА ПРОЕКТОРЕ', command=self.projector_board, **btn_style).pack(pady=15)
-        tk.Button(self.r, text='ФИНАЛЬНЫЙ ВОПРОС', command=self.final, bg=CARD, fg=TEXT_HIGHLIGHT, activebackground=CARD_HOVER, activeforeground=TEXT_HIGHLIGHT, relief='flat', bd=0, font=(FONT, 16, 'bold'), padx=25, pady=15).pack(pady=15)
+        tk.Button(self.r, text='ФИНАЛЬНЫЙ ВОПРОС', command=self.final, bg=CARD, fg=TEXT_DARK, activebackground=PANEL, activeforeground=TEXT_DARK, relief='flat', bd=0, font=(FONT, 16, 'bold'), padx=25, pady=15).pack(pady=15)
         tk.Button(self.r, text='Скрыть/Показать проектор', command=self.toggle_full, bg=BG, fg=TEXT_GREEN, relief='flat', bd=0, font=(FONT, 10)).pack(pady=15)
 
     def toggle_full(self):
@@ -223,9 +214,9 @@ class Game:
         
         # Верхняя панель
         top = tk.Frame(self.projector, bg=BG)
-        top.pack(fill='x', padx=40, pady=20)
-        self.lab(top, 'С В О Я К', 54, TEXT_HIGHLIGHT, bold=True).pack(side='left')
-        self.lab(top, 'РАУНД 1  •  6 РУБРИК', 22, TEXT_GREEN, bold=True).pack(side='right', pady=10)
+        top.pack(fill='x', padx=40, pady=(30, 20))
+        self.lab(top, 'С В О Я К', 54, TEXT_DARK, bold=True).pack(side='left')
+        self.lab(top, 'РАУНД 1', 22, TEXT_GREEN, bold=True).pack(side='right', pady=10)
         
         # Панель команд
         sf = tk.Frame(self.projector, bg=BG)
@@ -234,19 +225,22 @@ class Game:
             p = tk.Frame(sf, bg=PANEL)
             p.pack(side='left', expand=True, fill='x', padx=10)
             self.lab(p, self.names[i], 20, TEXT_GREEN, PANEL, True).pack(pady=(15, 5))
-            self.lab(p, str(self.scores[i]), 50, TEXT_HIGHLIGHT, PANEL, True).pack(pady=(0, 15))
+            self.lab(p, str(self.scores[i]), 50, TEXT_DARK, PANEL, True).pack(pady=(0, 15))
             
         if status:
-            self.lab(self.projector, status, 24, TEXT_HIGHLIGHT, bold=True).pack(pady=20)
+            self.lab(self.projector, status, 24, TEXT_DARK, bold=True).pack(pady=15)
             
-        # Сетка вопросов (Идеально ровная)
+        # ==========================================
+        # СЕТКА ВОПРОСОВ (Жесткая фиксация размеров)
+        # ==========================================
         grid = tk.Frame(self.projector, bg=BG)
-        grid.pack(expand=True, fill='both', padx=20, pady=15)
+        grid.pack(expand=True, fill='both', padx=20, pady=10)
         
         for c, cat in enumerate(CATS):
-            # Заголовки рубрик
-            cat_lbl = tk.Label(grid, text=cat, font=(FONT, 14, 'bold'), fg=TEXT_GREEN, bg=PANEL, height=2, wraplength=180)
-            cat_lbl.grid(row=0, column=c, sticky='nsew', padx=4, pady=(0, 8))
+            # Заголовки колонок
+            cat_lbl = tk.Label(grid, text=cat, font=(FONT, 16, 'bold'), fg=TEXT_GREEN, bg=PANEL, height=2, wraplength=200)
+            cat_lbl.grid(row=0, column=c, sticky='nsew', padx=3, pady=(0, 5))
+            
             # Фиксация ширины колонок
             grid.grid_columnconfigure(c, weight=1, uniform="col")
             
@@ -256,20 +250,22 @@ class Game:
                 
                 if key in self.used:
                     text = '✓'
-                    btn_bg = PANEL
-                    btn_fg = BG
+                    btn_bg = CARD_USED
+                    btn_fg = TEXT_GREEN
                 else:
+                    # Перенос строки для модификатора, чтобы не растягивать ячейку
                     text = f"{str((rr + 1) * 100)}\n{special}" if special else str((rr + 1) * 100)
                     btn_bg = CARD
-                    btn_fg = TEXT_HIGHLIGHT
+                    btn_fg = TEXT_DARK
                 
-                btn = tk.Button(grid, text=text, font=(FONT, 20, 'bold'), 
+                btn = tk.Button(grid, text=text, font=(FONT, 22, 'bold'), 
                                 bg=btn_bg, fg=btn_fg, 
-                                activebackground=CARD_HOVER, activeforeground=TEXT_HIGHLIGHT, 
+                                activebackground=PANEL, activeforeground=TEXT_DARK, 
                                 relief='flat', bd=0, 
                                 command=lambda x=c, y=rr: self.question(x, y), 
                                 state='disabled' if key in self.used else 'normal')
-                btn.grid(row=rr + 1, column=c, sticky='nsew', padx=4, pady=3)
+                btn.grid(row=rr + 1, column=c, sticky='nsew', padx=3, pady=3)
+                
                 # Фиксация высоты строк
                 grid.grid_rowconfigure(rr + 1, weight=1, uniform="row")
 
@@ -279,7 +275,7 @@ class Game:
         w.configure(bg=BG)
         w.geometry('750x550')
         w.transient(self.r)
-        self.lab(w, 'МОДИФИКАТОРЫ', 28, TEXT_HIGHLIGHT, bold=True).pack(pady=25)
+        self.lab(w, 'МОДИФИКАТОРЫ', 28, TEXT_DARK, bold=True).pack(pady=25)
         for n, d in MODS:
             f = tk.Frame(w, bg=PANEL)
             f.pack(fill='x', padx=25, pady=6)
@@ -298,12 +294,12 @@ class Game:
         self.ensure_projector()
         self.clear(self.projector)
         
-        self.lab(self.projector, CATS[c], 32, TEXT_HIGHLIGHT, bold=True).pack(pady=(100, 10))
+        self.lab(self.projector, CATS[c], 32, TEXT_DARK, bold=True).pack(pady=(100, 10))
         if sp:
             self.lab(self.projector, sp, 28, TEXT_GREEN, bg=CARD, bold=True, padx=20, pady=5).pack(pady=15)
-        self.lab(self.projector, f'{v} БАЛЛОВ', 24, TEXT_HIGHLIGHT, bold=True).pack(pady=15)
+        self.lab(self.projector, f'{v} БАЛЛОВ', 24, TEXT_DARK, bold=True).pack(pady=15)
         self.lab(self.projector, q, 50, TEXT_GREEN, bold=True, wraplength=1400, justify='center').pack(expand=True, padx=60)
-        self.lab(self.projector, 'СОВЕЩАНИЕ…', 22, TEXT_HIGHLIGHT).pack(pady=80)
+        self.lab(self.projector, 'СОВЕЩАНИЕ…', 22, TEXT_DARK).pack(pady=80)
         
         w = tk.Toplevel(self.r)
         w.title('Ответ ведущего')
@@ -311,13 +307,13 @@ class Game:
         w.geometry('780x650')
         w.transient(self.r)
         
-        self.lab(w, 'ОТВЕТ СКРЫТ ОТ ИГРОКОВ', 14, TEXT_HIGHLIGHT, bold=True).pack(pady=(25, 10))
+        self.lab(w, 'ОТВЕТ СКРЫТ ОТ ИГРОКОВ', 14, TEXT_DARK, bold=True).pack(pady=(25, 10))
         self.lab(w, f'{CATS[c]} • {v} баллов', 18, TEXT_GREEN, bold=True).pack(pady=5)
         if sp:
             self.lab(w, f'МОДИФИКАТОР: {sp}', 18, TEXT_GREEN, bg=CARD, bold=True, padx=10, pady=3).pack(pady=10)
             
         self.lab(w, q, 22, TEXT_GREEN, bold=True, wraplength=700, justify='center').pack(pady=25, padx=20)
-        self.lab(w, f'ОТВЕТ:\n{a}', 28, TEXT_HIGHLIGHT, bold=True, wraplength=700, justify='center').pack(pady=20)
+        self.lab(w, f'ОТВЕТ:\n{a}', 28, TEXT_DARK, bold=True, wraplength=700, justify='center').pack(pady=20)
         
         def award(i, ok):
             stake = v
@@ -340,7 +336,7 @@ class Game:
             row = tk.Frame(frame, bg=BG)
             row.pack(pady=8)
             self.lab(row, n, 16, TEXT_GREEN).pack(side='left', padx=15)
-            tk.Button(row, text='ВЕРНО +', command=lambda j=i: award(j, True), bg=CARD, fg=TEXT_HIGHLIGHT, relief='flat', bd=0, font=(FONT, 13, 'bold'), padx=15, pady=5).pack(side='left', padx=5)
+            tk.Button(row, text='ВЕРНО +', command=lambda j=i: award(j, True), bg=CARD, fg=TEXT_DARK, relief='flat', bd=0, font=(FONT, 13, 'bold'), padx=15, pady=5).pack(side='left', padx=5)
             tk.Button(row, text='НЕВЕРНО −', command=lambda j=i: award(j, False), bg=PANEL, fg=TEXT_GREEN, relief='flat', bd=0, font=(FONT, 13, 'bold'), padx=15, pady=5).pack(side='left', padx=5)
             
         tk.Button(w, text='ЗАКРЫТЬ БЕЗ НАЧИСЛЕНИЯ', command=lambda: (w.destroy(), self.host_board(), self.projector_board()), bg=PANEL, fg=TEXT_GREEN, relief='flat', bd=0, font=(FONT, 12, 'bold'), padx=20, pady=10).pack(pady=25)
@@ -357,11 +353,11 @@ class Game:
         self.ensure_projector()
         self.clear(self.projector)
         
-        self.lab(self.projector, 'ФИНАЛЬНЫЙ ВОПРОС', 40, TEXT_HIGHLIGHT, bold=True).pack(pady=(120, 20))
+        self.lab(self.projector, 'ФИНАЛЬНЫЙ ВОПРОС', 40, TEXT_DARK, bold=True).pack(pady=(120, 20))
         self.lab(self.projector, 'ТЕМА: СИНТАКСИС', 28, TEXT_GREEN, bold=True).pack(pady=15)
         self.lab(self.projector, q, 50, TEXT_GREEN, bold=True, wraplength=1400, justify='center').pack(expand=True, padx=60)
         
-        self.lab(w, 'ФИНАЛ (ОТВЕТ СКРЫТ)', 16, TEXT_HIGHLIGHT, bold=True).pack(pady=15)
+        self.lab(w, 'ФИНАЛ (ОТВЕТ СКРЫТ)', 16, TEXT_DARK, bold=True).pack(pady=15)
         self.lab(w, 'ОТВЕТ: КОТ УСНУЛ', 24, TEXT_GREEN, bold=True).pack(pady=15)
         
         entries = []
@@ -394,7 +390,7 @@ class Game:
             winner = max(range(3), key=lambda i: self.scores[i])
             messagebox.showinfo('Итоги', f'🏆 Победитель: {self.names[winner]}\n\n' + '\n'.join(f'{self.names[i]}: {self.scores[i]}' for i in range(3)))
             
-        tk.Button(w, text='ПОДВЕСТИ ИТОГИ', command=finish, bg=CARD, fg=TEXT_HIGHLIGHT, relief='flat', bd=0, font=(FONT, 15, 'bold'), padx=20, pady=10).pack(pady=25)
+        tk.Button(w, text='ПОДВЕСТИ ИТОГИ', command=finish, bg=CARD, fg=TEXT_DARK, relief='flat', bd=0, font=(FONT, 15, 'bold'), padx=20, pady=10).pack(pady=25)
 
 if __name__ == '__main__':
     root = tk.Tk()
