@@ -3,357 +3,243 @@ import tkinter as tk
 from tkinter import messagebox, simpledialog
 import random
 
-BG = '#090f20'
-PANEL = '#142341'
-BLUE = '#203b68'
-GOLD = '#f4c85b'
-CYAN = '#69d9ee'
-WHITE = '#f5f7ff'
-GREEN = '#64d6a5'
+BG='#080b12'; PANEL='#151d2b'; BLUE='#24344d'; GOLD='#f2b84b'; CYAN='#65d8d0'; WHITE='#f5f3ed'; GREEN='#69d69a'; RED='#d85c53'
+CATS=['ОРФОГРАФИЯ','ЧАСТИ РЕЧИ','ЛЕКСИКА','ФРАЗЕОЛОГИЯ','ПУНКТУАЦИЯ','ШЛАКОБЛОКУНЬ']
 
-CATS = ['ОРФОГРАФИЯ', 'ЧАСТИ РЕЧИ', 'ЛЕКСИКА', 'ФРАЗЕОЛОГИЯ', 'ПУНКТУАЦИЯ']
-
-Q = [
-    [
-        ('Вставьте букву: соб..рать портфель.', 'и'), ('Как пишется: пр..красный?', 'прекрасный'),
-        ('Выберите слово с ПРИ-: пр..школьный или пр..красный?', 'пришкольный'),
-        ('Проверочное слово к слову «мороз».', 'морозы'), ('В каком слове нужен Ь: мыш.., плащ.., врач..?', 'мышь'),
-        ('Вставьте букву: заг..реть на солнце.', 'а'), ('Как пишется НЕ с глаголами в обычном случае?', 'Раздельно'),
-        ('Вставьте букву: без..нициативный.', 'ы'),
-        ('Выберите верное написание: рас..казать или разсказать?', 'рассказать'),
-        ('Как пишется слово «искус..ный»?', 'искусный')
-    ],
-    [
-        ('Какая часть речи обозначает предмет?', 'Имя существительное'),
-        ('Какая часть речи обозначает признак предмета?', 'Имя прилагательное'),
-        ('Какая часть речи обозначает действие?', 'Глагол'),
-        ('Какая часть речи обозначает признак действия?', 'Наречие'),
-        ('Какая часть речи отвечает на вопросы сколько? который?', 'Имя числительное'),
-        ('Как называется начальная форма глагола?', 'Инфинитив'),
-        ('Как называется изменение существительных по падежам?', 'Склонение'),
-        ('Сколько падежей в русском языке?', 'Шесть'),
-        ('Как называется изменение глаголов по лицам и числам?', 'Спряжение'),
-        ('Какой частью речи является слово «вчера»?', 'Наречие')
-    ],
-    [
-        ('Слова, близкие по значению, — это…', 'Синонимы'),
-        ('Слова с противоположным значением — это…', 'Антонимы'),
-        ('Одинаково звучащие и пишущиеся слова с разными значениями — это…', 'Омонимы'),
-        ('Какое слово устаревшее: «очи» или «глаза»?', 'Очи'), ('Как называется словарный состав языка?', 'Лексика'),
-        ('Как называется слово, недавно появившееся в языке?', 'Неологизм'),
-        ('Как называется слово, характерное для определённой местности?', 'Диалектизм'),
-        ('Как называется основное прямое значение слова?', 'Прямое значение'),
-        ('Как называется перенос названия по сходству?', 'Метафора'),
-        ('Как называется словарь, объясняющий значения слов?', 'Толковый словарь')
-    ],
-    [
-        ('Что означает «бить баклуши»?', 'Бездельничать'), ('Продолжите: «Зарубить себе на…»', 'Нос'),
-        ('Что значит «водить за нос»?', 'Обманывать'), ('Что означает «кот наплакал»?', 'Очень мало'),
-        ('Что значит «держать язык за зубами»?', 'Молчать, хранить секрет'),
-        ('Что означает «делать из мухи слона»?', 'Преувеличивать'), ('Продолжите: «Как две капли…»', 'Воды'),
-        ('Что значит «ни свет ни заря»?', 'Очень рано'),
-        ('Что означает «работать спустя рукава»?', 'Небрежно, плохо работать'),
-        ('Что значит «витать в облаках»?', 'Мечтать, отвлекаться')
-    ],
-    [
-        ('Какой знак ставится в конце вопросительного предложения?', 'Вопросительный знак'),
-        ('Какой знак разделяет однородные члены без союза?', 'Запятая'),
-        ('Какой знак ставится между подлежащим и сказуемым при соответствующих условиях?', 'Тире'),
-        ('Расставьте знак: «Когда стемнело мы вернулись».', 'Когда стемнело, мы вернулись.'),
-        ('Нужна ли запятая перед одиночным И между однородными членами?', 'Нет'),
-        ('Какой знак ставится после слов автора перед прямой речью?', 'Двоеточие'),
-        ('Расставьте знаки: «Мама купила яблоки груши и сливы».', 'Мама купила яблоки, груши и сливы.'),
-        ('Как называется предложение с одной грамматической основой?', 'Простое'),
-        ('Сколько грамматических основ в сложном предложении?', 'Две или более'),
-        ('Расставьте знаки: «Я знаю что ты придёшь».', 'Я знаю, что ты придёшь.')
-    ]
+Q=[
+[
+('Вставьте букву: соб..рать портфель.','и'),('Как пишется: пр..красный?','прекрасный'),('Выберите слово с ПРИ-: пр..школьный или пр..красный?','пришкольный'),('Проверочное слово к слову «мороз».','морозы'),('В каком слове нужен Ь: мыш.., плащ.., врач..?','мышь'),('Вставьте букву: заг..реть на солнце.','а'),('Как пишется НЕ с глаголами в обычном случае?','Раздельно'),('Вставьте букву: без..нициативный.','ы'),('Выберите верное написание: рас..казать или разсказать?','рассказать'),('Как пишется слово «искус..ный»?','искусный')],
+[
+('Какая часть речи обозначает предмет?','Имя существительное'),('Какая часть речи обозначает признак предмета?','Имя прилагательное'),('Какая часть речи обозначает действие?','Глагол'),('Какая часть речи обозначает признак действия?','Наречие'),('Какая часть речи отвечает на вопросы сколько? который?','Имя числительное'),('Как называется начальная форма глагола?','Инфинитив'),('Как называется изменение существительных по падежам?','Склонение'),('Сколько падежей в русском языке?','Шесть'),('Как называется изменение глаголов по лицам и числам?','Спряжение'),('Какой частью речи является слово «вчера»?','Наречие')],
+[
+('Слова, близкие по значению, — это…','Синонимы'),('Слова с противоположным значением — это…','Антонимы'),('Одинаково звучащие и пишущиеся слова с разными значениями — это…','Омонимы'),('Какое слово устаревшее: «очи» или «глаза»?','Очи'),('Как называется словарный состав языка?','Лексика'),('Как называется слово, недавно появившееся в языке?','Неологизм'),('Как называется слово, характерное для определённой местности?','Диалектизм'),('Как называется основное прямое значение слова?','Прямое значение'),('Как называется перенос названия по сходству?','Метафора'),('Как называется словарь, объясняющий значения слов?','Толковый словарь')],
+[
+('Что означает «бить баклуши»?','Бездельничать'),('Продолжите: «Зарубить себе на…»','Нос'),('Что значит «водить за нос»?','Обманывать'),('Что означает «кот наплакал»?','Очень мало'),('Что значит «держать язык за зубами»?','Молчать, хранить секрет'),('Что означает «делать из мухи слона»?','Преувеличивать'),('Продолжите: «Как две капли…»','Воды'),('Что значит «ни свет ни заря»?','Очень рано'),('Что означает «работать спустя рукава»?','Небрежно, плохо работать'),('Что значит «витать в облаках»?','Мечтать, отвлекаться')],
+[
+('Какой знак ставится в конце вопросительного предложения?','Вопросительный знак'),('Какой знак разделяет однородные члены без союза?','Запятая'),('Какой знак ставится между подлежащим и сказуемым при соответствующих условиях?','Тире'),('Расставьте знак: «Когда стемнело мы вернулись».','Когда стемнело, мы вернулись.'),('Нужна ли запятая перед одиночным И между однородными членами?','Нет'),('Какой знак ставится после слов автора перед прямой речью?','Двоеточие'),('Расставьте знаки: «Мама купила яблоки груши и сливы».','Мама купила яблоки, груши и сливы.'),('Как называется предложение с одной грамматической основой?','Простое'),('Сколько грамматических основ в сложном предложении?','Две или более'),('Расставьте знаки: «Я знаю что ты придёшь».','Я знаю, что ты придёшь.')],
+[
+('Из каких двух слов собрали слово «шлакоблокунь»?','Шлакоблок + окунь'),('Как называется соединение частей двух слов в одно новое слово?','Контаминация'),('Составьте шуточное слово из «кот» и «компьютер».','Например: котьютер / компокот'),('«Карусельдь» — какие два слова спрятались внутри?','Карусель + сельдь'),('Какое слово получится из «спорткар» и «карась»?','Спорткарась'),('Придумайте слово-гибрид из «учебник» и «дракон».','Например: учебдракон / драконик'),('Что смешного в слове «шлакоблокунь»?','Склеены конец одного и начало другого слова; получается образный гибрид'),('Как называется новое, необычное слово, созданное автором?','Окказионализм'),('Расшифруйте гибрид «сомолёт»: какие слова соединены?','Сом + самолёт'),('Придумайте гибрид из «запятая» и «лягушка» и объясните его.','Любой понятный авторский вариант с объяснением') ]
 ]
 
-MEMES = ['🐈 Кот уже открыл учебник. Почти.', '📚 Понедельник: мозг загружается…',
-         '🐾 Кот учит правило и требует вкусняшку.', '😺 Это задание кот решил лапкой.', '☕ Учебный режим активирован!']
-
-MODS = [('КОТ В МЕШКЕ', 'Вопрос переходит другой команде. Стоимость сохраняется.'),
-        ('АУКЦИОН',
-         'Команды делают ставки. Побеждает наибольшая ставка; верный ответ приносит ставку, ошибка её снимает.'),
-        ('УДВОЕНИЕ', 'За верный ответ начисляется двойная стоимость.'),
-        ('ВА-БАНК', 'Команда может поставить весь свой текущий счёт.'),
-        ('ПЕРЕХВАТ', 'После ошибки выбранной команды соперники могут ответить за половину стоимости.'),
-        ('БОНУСНЫЙ КОТИК', 'Ведущий может добавить выбранной команде 100 баллов за точное объяснение.')]
-
-SPECIAL = {(0, 7): 'АУКЦИОН', (1, 5): 'УДВОЕНИЕ', (2, 8): 'КОТ В МЕШКЕ', (3, 6): 'ВА-БАНК', (4, 9): 'ПЕРЕХВАТ'}
-
+MEMES=['🐈 Кот уже открыл учебник. Почти.','📚 Понедельник: мозг загружается…','🐾 Кот учит правило и требует вкусняшку.','😺 Это задание кот решил лапкой.','☕ Учебный режим активирован!']
+MODS=[('КОТ В МЕШКЕ','Вопрос переходит другой команде. Стоимость сохраняется.'),('АУКЦИОН','Команды делают ставки. Побеждает наибольшая ставка; верный ответ приносит ставку, ошибка её снимает.'),('УДВОЕНИЕ','За верный ответ начисляется двойная стоимость.'),('ВА-БАНК','Команда может поставить весь свой текущий счёт.'),('ПЕРЕХВАТ','После ошибки выбранной команды соперники могут ответить за половину стоимости.'),('БОНУСНЫЙ КОТИК','Ведущий может добавить выбранной команде 100 баллов за точное объяснение.')]
+SPECIAL={(0,7):'АУКЦИОН',(1,5):'УДВОЕНИЕ',(2,8):'КОТ В МЕШКЕ',(3,6):'ВА-БАНК',(4,9):'ПЕРЕХВАТ'}
 
 class Game:
-    def __init__(self, root):
-        self.r = root
+    def __init__(self,root):
+        self.r=root
         root.title('СВОЯК — Пульт ведущего')
         root.geometry('1000x760')
         root.configure(bg=BG)
         
-        self.names = ['Команда 1', 'Команда 2', 'Команда 3']
-        self.scores = [0, 0, 0]
-        self.used = set()
+        self.names=['Команда 1','Команда 2','Команда 3']
+        self.scores=[0,0,0]
+        self.used=set()
         
-        # Создаем окно проектора
-        self.projector = tk.Toplevel(root)
+        self.projector=tk.Toplevel(root)
         self.projector.title('СВОЯК — Экран для проектора')
         self.projector.configure(bg=BG)
-        self.projector.geometry('1200x800+1000+0')
+        self._place_projector_on_second_monitor()
         
-        # Перехватываем крестик
+        self.p_full=True
+        self.current=None
+        
+        # ВОЗВРАЩАЕМ ЗАЩИТУ: привязываем крестик к функции скрытия
         self.projector.protocol("WM_DELETE_WINDOW", self.close_projector)
+        self.projector.bind('<Map>', self._keep_projector_fullscreen)
+        self.projector.after(350, self._set_projector_fullscreen)
         
-        self.p_full = False
-        self.current = None
         self.make_start()
 
+    # НОВАЯ ФУНКЦИЯ: гарантирует, что окно проектора существует и активно
+    def ensure_projector(self):
+        if not self.projector.winfo_exists():
+            self.projector = tk.Toplevel(self.r)
+            self.projector.title('СВОЯК — Экран для проектора')
+            self.projector.configure(bg=BG)
+            self._place_projector_on_second_monitor()
+            self.projector.protocol("WM_DELETE_WINDOW", self.close_projector)
+            self.projector.bind('<Map>', self._keep_projector_fullscreen)
+            self.projector.after(350, self._set_projector_fullscreen)
+        self.projector.deiconify()
+
     def close_projector(self):
-        # Прячем окно, а не убиваем
         self.projector.withdraw()
 
-    def clear(self, w):
+    def _place_projector_on_second_monitor(self):
+        try:
+            import ctypes
+            from ctypes import wintypes
+            monitors=[]
+            MONITORENUMPROC=ctypes.WINFUNCTYPE(ctypes.c_int, wintypes.HMONITOR, wintypes.HDC, ctypes.POINTER(wintypes.RECT), wintypes.LPARAM)
+            def collect(hmon, hdc, rect, data):
+                r=rect.contents; monitors.append((r.left,r.top,r.right-r.left,r.bottom-r.top)); return 1
+            callback=MONITORENUMPROC(collect)
+            ctypes.windll.user32.EnumDisplayMonitors(0,0,callback,0)
+            if len(monitors)>1:
+                x,y,w,h=monitors[1]; self.projector.geometry(f'{w}x{h}{x:+d}{y:+d}')
+            else:
+                self.projector.geometry('1280x720+0+0')
+        except Exception:
+            self.projector.geometry('1280x720+1000+0')
+
+    def _set_projector_fullscreen(self):
+        try:
+            if self.projector.winfo_exists():
+                self.projector.attributes('-fullscreen', True)
+                self.projector.lift()
+        except tk.TclError:
+            pass
+
+    def _keep_projector_fullscreen(self,event=None):
+        if self.p_full:
+            self.projector.after_idle(self._set_projector_fullscreen)
+
+    def clear(self,w):
         try:
             if w.winfo_exists():
-                for x in w.winfo_children():
-                    x.destroy()
+                for x in w.winfo_children():x.destroy()
         except Exception:
             pass
 
-    def lab(self, p, t, size=14, color=WHITE, bg=BG, bold=False, **kw):
-        return tk.Label(p, text=t, font=('Arial', size, 'bold' if bold else 'normal'), fg=color, bg=bg, **kw)
+    def lab(self,p,t,size=14,color=WHITE,bg=BG,bold=False,**kw):
+        return tk.Label(p,text=t,font=('Arial',size,'bold' if bold else 'normal'),fg=color,bg=bg,**kw)
 
     def make_start(self):
-        self.clear(self.r)
-        f = tk.Frame(self.r, bg=BG)
-        f.pack(expand=True)
-        
-        self.lab(f, 'ПУЛЬТ ВЕДУЩЕГО', 30, GOLD, bold=True).pack(pady=18)
-        self.lab(f, 'Названия команд', 15, CYAN).pack()
-        
-        self.entries = []
+        self.clear(self.r);f=tk.Frame(self.r,bg=BG);f.pack(expand=True)
+        self.lab(f,'ПУЛЬТ ВЕДУЩЕГО',30,GOLD,bold=True).pack(pady=18)
+        self.lab(f,'Названия команд',15,CYAN).pack()
+        self.entries=[]
         for i in range(3):
-            e = tk.Entry(f, font=('Arial', 16), justify='center', width=28)
-            e.insert(0, self.names[i])
-            e.pack(pady=7)
-            self.entries.append(e)
-            
-        tk.Button(f, text='НАЧАТЬ ИГРУ', font=('Arial', 16, 'bold'), bg=GOLD, fg=BG, command=self.start, padx=25, pady=12).pack(pady=20)
-        tk.Button(f, text='Развернуть экран проектора', command=self.toggle_full, bg=BLUE, fg=WHITE).pack()
-        
+            e=tk.Entry(f,font=('Arial',16),justify='center',width=28);e.insert(0,self.names[i]);e.pack(pady=7);self.entries.append(e)
+        tk.Button(f,text='НАЧАТЬ ИГРУ',font=('Arial',16,'bold'),bg=GOLD,fg=BG,command=self.start,padx=25,pady=12).pack(pady=20)
+        tk.Button(f,text='Вернуть полный экран проектора',command=self.toggle_full,bg=BLUE,fg=WHITE).pack()
         self.projector_board('ОЖИДАНИЕ НАЧАЛА ИГРЫ')
 
     def start(self):
-        self.names = [e.get().strip() or f'Команда {i + 1}' for i, e in enumerate(self.entries)]
-        self.host_board()
-        self.projector_board()
+        self.names=[e.get().strip() or f'Команда {i+1}' for i,e in enumerate(self.entries)]
+        self.host_board();self.projector_board()
 
     def toggle_full(self):
-        self.p_full = not self.p_full
-        
-        # Если окно проектора было уничтожено - создаем заново
-        if not self.projector.winfo_exists():
-            self.projector = tk.Toplevel(self.r)
-            self.projector.title('СВОЯК — Экран для проектора')
-            self.projector.configure(bg=BG)
-            self.projector.geometry('1200x800+1000+0')
-            self.projector.protocol("WM_DELETE_WINDOW", self.close_projector)
-            
-        self.projector.deiconify() 
-        self.projector.attributes('-fullscreen', self.p_full)
+        self.p_full=True
+        self.ensure_projector()
+        self._set_projector_fullscreen()
 
     def host_board(self):
         self.clear(self.r)
-        top = tk.Frame(self.r, bg=BG)
-        top.pack(fill='x', padx=16, pady=12)
-        self.lab(top, 'ПУЛЬТ ВЕДУЩЕГО', 24, GOLD, bold=True).pack(side='left')
-        tk.Button(top, text='Экран проектора: полный экран', command=self.toggle_full, bg=BLUE, fg=WHITE).pack(side='right')
-        
-        sf = tk.Frame(self.r, bg=BG)
-        sf.pack(fill='x', padx=12)
+        top=tk.Frame(self.r,bg=BG);top.pack(fill='x',padx=16,pady=12)
+        self.lab(top,'ПУЛЬТ ВЕДУЩЕГО',24,GOLD,bold=True).pack(side='left')
+        tk.Button(top,text='Вернуть полный экран проектора',command=self.toggle_full,bg=BLUE,fg=WHITE).pack(side='right')
+        sf=tk.Frame(self.r,bg=BG);sf.pack(fill='x',padx=12)
         for i in range(3):
-            p = tk.Frame(sf, bg=PANEL)
-            p.pack(side='left', expand=True, fill='x', padx=4)
-            self.lab(p, self.names[i], 13, WHITE, PANEL, True).pack(pady=4)
-            self.lab(p, str(self.scores[i]), 24, GOLD, PANEL, True).pack(pady=4)
-            
-        self.lab(self.r, 'Выберите вопрос на экране проектора или управляйте игрой ниже.', 13, CYAN).pack(pady=18)
-        tk.Button(self.r, text='МОДИФИКАТОРЫ', command=self.modifiers, bg=BLUE, fg=WHITE, padx=15, pady=8).pack(pady=6)
-        tk.Button(self.r, text='ФИНАЛЬНЫЙ ВОПРОС', command=self.final, bg=GOLD, fg=BG, padx=20, pady=10).pack(pady=6)
-        tk.Button(self.r, text='ПОКАЗАТЬ ТАБЛО НА ПРОЕКТОРЕ', command=self.projector_board, bg=BLUE, fg=WHITE, padx=15, pady=8).pack(pady=6)
+            p=tk.Frame(sf,bg=PANEL);p.pack(side='left',expand=True,fill='x',padx=4)
+            self.lab(p,self.names[i],13,WHITE,PANEL,True).pack(pady=4)
+            self.lab(p,str(self.scores[i]),24,GOLD,PANEL,True).pack(pady=4)
+        self.lab(self.r,'Выберите вопрос на экране проектора или управляйте игрой ниже.',13,CYAN).pack(pady=18)
+        tk.Button(self.r,text='МОДИФИКАТОРЫ',command=self.modifiers,bg=BLUE,fg=WHITE,padx=15,pady=8).pack(pady=6)
+        tk.Button(self.r,text='ФИНАЛЬНЫЙ ВОПРОС',command=self.final,bg=GOLD,fg=BG,padx=20,pady=10).pack(pady=6)
+        tk.Button(self.r,text='ПОКАЗАТЬ ТАБЛО НА ПРОЕКТОРЕ',command=self.projector_board,bg=BLUE,fg=WHITE,padx=15,pady=8).pack(pady=6)
 
-    def projector_board(self, status=''):
-        # Если окно проектора было уничтожено - создаем заново
-        if not self.projector.winfo_exists():
-            self.projector = tk.Toplevel(self.r)
-            self.projector.title('СВОЯК — Экран для проектора')
-            self.projector.configure(bg=BG)
-            self.projector.geometry('1200x800+1000+0')
-            self.projector.protocol("WM_DELETE_WINDOW", self.close_projector)
-
-        self.projector.deiconify()
+    def projector_board(self,status=''):
+        self.ensure_projector()
         self.clear(self.projector)
         
-        top = tk.Frame(self.projector, bg=BG)
-        top.pack(fill='x', padx=20, pady=14)
-        self.lab(top, 'С В О Я К', 32, GOLD, bold=True).pack(side='left')
-        self.lab(top, 'РАУНД 1', 18, CYAN, bold=True).pack(side='right')
-        
-        sf = tk.Frame(self.projector, bg=BG)
-        sf.pack(fill='x', padx=15)
+        top=tk.Frame(self.projector,bg=BG);top.pack(fill='x',padx=20,pady=14)
+        self.lab(top,'С В О Я К',36,GOLD,bold=True).pack(side='left')
+        self.lab(top,'РАУНД 1  •  6 РУБРИК',18,CYAN,bold=True).pack(side='right')
+        sf=tk.Frame(self.projector,bg=BG);sf.pack(fill='x',padx=15)
         for i in range(3):
-            p = tk.Frame(sf, bg=PANEL)
-            p.pack(side='left', expand=True, fill='x', padx=6)
-            self.lab(p, self.names[i], 16, WHITE, PANEL, True).pack(pady=5)
-            self.lab(p, str(self.scores[i]), 30, GOLD, PANEL, True).pack(pady=5)
-            
-        if status:
-            self.lab(self.projector, status, 18, CYAN, bold=True).pack(pady=15)
-            
-        grid = tk.Frame(self.projector, bg=BG)
-        grid.pack(expand=True, fill='both', padx=18, pady=12)
+            p=tk.Frame(sf,bg=PANEL);p.pack(side='left',expand=True,fill='x',padx=6)
+            self.lab(p,self.names[i],15,WHITE,PANEL,True).pack(pady=5)
+            self.lab(p,str(self.scores[i]),28,GOLD,PANEL,True).pack(pady=5)
+        if status:self.lab(self.projector,status,18,CYAN,bold=True).pack(pady=15)
         
-        for c, cat in enumerate(CATS):
-            self.lab(grid, cat, 12, WHITE, BLUE, True, wraplength=210, height=2).grid(row=0, column=c, sticky='nsew', padx=3, pady=3)
-            grid.grid_columnconfigure(c, weight=1)
+        grid=tk.Frame(self.projector,bg=BG);grid.pack(expand=True,fill='both',padx=18,pady=12)
+        for c,cat in enumerate(CATS):
+            self.lab(grid,cat,11,GOLD if cat=='ШЛАКОБЛОКУНЬ' else WHITE,BLUE,True,wraplength=175,height=2).grid(row=0,column=c,sticky='nsew',padx=2,pady=3);grid.grid_columnconfigure(c,weight=1)
             for rr in range(10):
-                key = (c, rr)
-                special = SPECIAL.get(key, '')
-                text = '✓' if key in self.used else str((rr + 1) * 100) + (('\n' + special) if special else '')
-                btn = tk.Button(grid, text=text, font=('Arial', 14, 'bold'), bg='#142c50' if key not in self.used else '#263044',
-                                fg=GOLD, relief='flat', command=lambda x=c, y=rr: self.question(x, y),
-                                state='disabled' if key in self.used else 'normal')
-                btn.grid(row=rr + 1, column=c, sticky='nsew', padx=3, pady=2)
-                grid.grid_rowconfigure(rr + 1, weight=1)
+                key=(c,rr);special=SPECIAL.get(key,'')
+                text='✓' if key in self.used else str((rr+1)*100)+(('\n'+special) if special else '')
+                btn=tk.Button(grid,text=text,font=('Arial',12,'bold'),bg=('#382d20' if cat=='ШЛАКОБЛОКУНЬ' else '#182b43') if key not in self.used else '#252b35',fg=GOLD,activebackground='#3c526d',activeforeground=WHITE,relief='flat',bd=0,command=lambda x=c,y=rr:self.question(x,y),state='disabled' if key in self.used else 'normal')
+                btn.grid(row=rr+1,column=c,sticky='nsew',padx=3,pady=2);grid.grid_rowconfigure(rr+1,weight=1)
 
     def modifiers(self):
-        w = tk.Toplevel(self.r)
-        w.title('Модификаторы — только ведущий')
-        w.configure(bg=BG)
-        w.geometry('700x520')
-        self.lab(w, 'МОДИФИКАТОРЫ', 22, GOLD, bold=True).pack(pady=18)
-        for n, d in MODS:
-            self.lab(w, n + ' — ' + d, 12, WHITE, PANEL, wraplength=640, justify='left', padx=12, pady=8).pack(fill='x', padx=14, pady=4)
+        w=tk.Toplevel(self.r);w.title('Модификаторы — только ведущий');w.configure(bg=BG);w.geometry('700x520')
+        self.lab(w,'МОДИФИКАТОРЫ',22,GOLD,bold=True).pack(pady=18)
+        for n,d in MODS:self.lab(w,n+' — '+d,12,WHITE,PANEL,wraplength=640,justify='left',padx=12,pady=8).pack(fill='x',padx=14,pady=4)
 
-    def question(self, c, r):
-        key = (c, r)
-        if key in self.used:
-            return
-        self.used.add(key)
-        q, a = Q[c][r]
-        v = (r + 1) * 100
-        sp = SPECIAL.get(key, 'ОБЫЧНЫЙ ВОПРОС')
+    def question(self,c,r):
+        key=(c,r)
+        if key in self.used:return
+        self.used.add(key);q,a=Q[c][r];v=(r+1)*100;sp=SPECIAL.get(key,'ОБЫЧНЫЙ ВОПРОС')
         
-        # Проектор
-        if not self.projector.winfo_exists():
-            self.projector = tk.Toplevel(self.r)
-            self.projector.title('СВОЯК — Экран для проектора')
-            self.projector.configure(bg=BG)
-            self.projector.geometry('1200x800+1000+0')
-            self.projector.protocol("WM_DELETE_WINDOW", self.close_projector)
-            
-        self.projector.deiconify() 
+        self.ensure_projector()
         self.clear(self.projector)
+        self.lab(self.projector,CATS[c]+'  •  '+str(v)+' БАЛЛОВ',22,CYAN,bold=True).pack(pady=35)
+        self.lab(self.projector,sp,17,GOLD,bold=True).pack(pady=12)
+        self.lab(self.projector,q,30,WHITE,bold=True,wraplength=1050,justify='center').pack(expand=True,padx=55)
+        self.lab(self.projector,'СОВЕЩАНИЕ КОМАНД…',14,'#a8b8d6').pack(pady=35)
         
-        self.lab(self.projector, CATS[c] + '  •  ' + str(v) + ' БАЛЛОВ', 22, CYAN, bold=True).pack(pady=35)
-        self.lab(self.projector, sp, 17, GOLD, bold=True).pack(pady=12)
-        self.lab(self.projector, q, 30, WHITE, bold=True, wraplength=1050, justify='center').pack(expand=True, padx=55)
-        self.lab(self.projector, 'СОВЕЩАНИЕ КОМАНД…', 14, '#a8b8d6').pack(pady=35)
-        
-        # Пульт ведущего
-        w = tk.Toplevel(self.r)
-        w.title('ВЕДУЩИЙ — ответ скрыт от игроков')
-        w.configure(bg=BG)
-        w.geometry('780x650')
-        w.transient(self.r)
-        
-        self.lab(w, 'ТОЛЬКО ДЛЯ ВЕДУЩЕГО', 14, CYAN, bold=True).pack(pady=(20, 5))
-        self.lab(w, CATS[c] + ' • ' + str(v) + ' баллов • ' + sp, 15, GOLD, bold=True).pack(pady=8)
-        self.lab(w, 'ВОПРОС: ' + q, 18, WHITE, bold=True, wraplength=700, justify='center').pack(pady=15, padx=20)
-        ans = self.lab(w, 'ОТВЕТ: ' + a, 20, GREEN, bold=True, wraplength=700, justify='center')
+        w=tk.Toplevel(self.r);w.title('ВЕДУЩИЙ — ответ скрыт от игроков');w.configure(bg=BG);w.geometry('780x650');w.transient(self.r)
+        self.lab(w,'ТОЛЬКО ДЛЯ ВЕДУЩЕГО',14,CYAN,bold=True).pack(pady=(20,5))
+        self.lab(w,CATS[c]+' • '+str(v)+' баллов • '+sp,15,GOLD,bold=True).pack(pady=8)
+        self.lab(w,'ВОПРОС: '+q,18,WHITE,bold=True,wraplength=700,justify='center').pack(pady=15,padx=20)
+        ans=self.lab(w,'ОТВЕТ: '+a,20,GREEN,bold=True,wraplength=700,justify='center')
         ans.pack(pady=18)
-
-        def award(i, ok):
-            stake = v
-            if sp == 'АУКЦИОН':
-                x = simpledialog.askinteger('Аукцион', 'Ставка команды (0–1000):', parent=w, minvalue=0, maxvalue=1000)
-                if x is None:
-                    return
-                stake = x
-            if sp == 'ВА-БАНК':
-                stake = max(0, self.scores[i])
-            if sp == 'УДВОЕНИЕ' and ok:
-                stake *= 2
-            self.scores[i] += stake if ok else -stake
-            w.destroy()
-            self.host_board()
-            self.projector_board()
-
-        frame = tk.Frame(w, bg=BG)
-        frame.pack(pady=12)
-        for i, n in enumerate(self.names):
-            row = tk.Frame(frame, bg=BG)
-            row.pack(pady=5)
-            self.lab(row, n, 13, WHITE).pack(side='left', padx=8)
-            tk.Button(row, text='ВЕРНО +', command=lambda j=i: award(j, True), bg='#23694f', fg='white').pack(side='left', padx=3)
-            tk.Button(row, text='НЕВЕРНО −', command=lambda j=i: award(j, False), bg='#78394a', fg='white').pack(side='left', padx=3)
+        
+        def award(i,ok):
+            stake=v
+            if sp=='АУКЦИОН':
+                x=simpledialog.askinteger('Аукцион','Ставка команды (0–1000):',parent=w,minvalue=0,maxvalue=1000)
+                if x is None:return
+                stake=x
+            if sp=='ВА-БАНК':stake=max(0,self.scores[i])
+            if sp=='УДВОЕНИЕ' and ok:stake*=2
+            self.scores[i]+=stake if ok else -stake
+            w.destroy();self.host_board();self.projector_board()
             
-        tk.Button(w, text='Закрыть без начисления', command=lambda: (w.destroy(), self.host_board(), self.projector_board()), bg=BLUE, fg=WHITE).pack(pady=12)
+        frame=tk.Frame(w,bg=BG);frame.pack(pady=12)
+        for i,n in enumerate(self.names):
+            row=tk.Frame(frame,bg=BG);row.pack(pady=5)
+            self.lab(row,n,13,WHITE).pack(side='left',padx=8)
+            tk.Button(row,text='ВЕРНО +',command=lambda j=i:award(j,True),bg='#23694f',fg='white').pack(side='left',padx=3)
+            tk.Button(row,text='НЕВЕРНО −',command=lambda j=i:award(j,False),bg='#78394a',fg='white').pack(side='left',padx=3)
+        tk.Button(w,text='Закрыть без начисления',command=lambda:(w.destroy(),self.host_board(),self.projector_board()),bg=BLUE,fg=WHITE).pack(pady=12)
 
     def final(self):
-        w = tk.Toplevel(self.r)
-        w.title('ФИНАЛ — только ведущий')
-        w.configure(bg=BG)
-        w.geometry('780x650')
-        q = 'В предложении «Уставший после уроков кот быстро уснул на подоконнике» назовите грамматическую основу.'
+        w=tk.Toplevel(self.r);w.title('ФИНАЛ — только ведущий');w.configure(bg=BG);w.geometry('780x650')
+        q='В предложении «Уставший после уроков кот быстро уснул на подоконнике» назовите грамматическую основу.'
         
-        if not self.projector.winfo_exists():
-            self.projector = tk.Toplevel(self.r)
-            self.projector.title('СВОЯК — Экран для проектора')
-            self.projector.configure(bg=BG)
-            self.projector.geometry('1200x800+1000+0')
-            self.projector.protocol("WM_DELETE_WINDOW", self.close_projector)
-            
-        self.projector.deiconify()
+        self.ensure_projector()
         self.clear(self.projector)
+        self.lab(self.projector,'ФИНАЛЬНЫЙ ВОПРОС',28,GOLD,bold=True).pack(pady=50)
+        self.lab(self.projector,'ТЕМА: СИНТАКСИС',20,CYAN,bold=True).pack(pady=15)
+        self.lab(self.projector,q,30,WHITE,bold=True,wraplength=1050,justify='center').pack(expand=True,padx=50)
         
-        self.lab(self.projector, 'ФИНАЛЬНЫЙ ВОПРОС', 28, GOLD, bold=True).pack(pady=50)
-        self.lab(self.projector, 'ТЕМА: СИНТАКСИС', 20, CYAN, bold=True).pack(pady=15)
-        self.lab(self.projector, q, 30, WHITE, bold=True, wraplength=1050, justify='center').pack(expand=True, padx=50)
+        self.lab(w,'ТОЛЬКО ДЛЯ ВЕДУЩЕГО',14,CYAN,bold=True).pack(pady=12)
+        self.lab(w,'ОТВЕТ: КОТ УСНУЛ.',20,GREEN,bold=True).pack(pady=8)
         
-        self.lab(w, 'ТОЛЬКО ДЛЯ ВЕДУЩЕГО', 14, CYAN, bold=True).pack(pady=12)
-        self.lab(w, 'ОТВЕТ: КОТ УСНУЛ.', 20, GREEN, bold=True).pack(pady=8)
-        
-        entries = []
-        for i, n in enumerate(self.names):
-            row = tk.Frame(w, bg=BG)
-            row.pack(pady=5)
-            self.lab(row, n, 13, WHITE).pack(side='left', padx=8)
-            e = tk.Entry(row, width=12, justify='center')
-            e.insert(0, '0')
-            e.pack(side='left')
-            entries.append(e)
+        entries=[]
+        for i,n in enumerate(self.names):
+            row=tk.Frame(w,bg=BG);row.pack(pady=5);self.lab(row,n,13,WHITE).pack(side='left',padx=8)
+            e=tk.Entry(row,width=12,justify='center');e.insert(0,'0');e.pack(side='left');entries.append(e)
             
         def finish():
             try:
-                bs = [int(e.get()) for e in entries]
-                assert all(0 <= bs[i] <= max(0, self.scores[i]) for i in range(3))
+                bs=[int(e.get()) for e in entries]
+                assert all(0<=bs[i]<=max(0,self.scores[i]) for i in range(3))
             except:
-                messagebox.showerror('Ставка', 'Ставка должна быть от 0 до текущего счёта.')
-                return
+                messagebox.showerror('Ставка','Ставка должна быть от 0 до текущего счёта.');return
             for i in range(3):
-                if messagebox.askyesno('Ответ команды', f'{self.names[i]} ответила правильно?', parent=w):
-                    self.scores[i] += bs[i]
-                else:
-                    self.scores[i] -= bs[i]
-            w.destroy()
-            self.host_board()
-            self.projector_board('ИТОГИ ИГРЫ')
-            winner = max(range(3), key=lambda i: self.scores[i])
-            messagebox.showinfo('Итоги', '\n'.join(f'{self.names[i]}: {self.scores[i]}' for i in range(3)) + f'\n\nПобедитель: {self.names[winner]}!')
+                if messagebox.askyesno('Ответ команды',f'{self.names[i]} ответила правильно?',parent=w):self.scores[i]+=bs[i]
+                else:self.scores[i]-=bs[i]
+            w.destroy();self.host_board();self.projector_board('ИТОГИ ИГРЫ')
+            winner=max(range(3),key=lambda i:self.scores[i])
+            messagebox.showinfo('Итоги','\n'.join(f'{self.names[i]}: {self.scores[i]}' for i in range(3))+f'\n\nПобедитель: {self.names[winner]}!')
             
-        tk.Button(w, text='ПОДВЕСТИ ИТОГИ', command=finish, bg=GOLD, fg=BG).pack(pady=18)
+        tk.Button(w,text='ПОДВЕСТИ ИТОГИ',command=finish,bg=GOLD,fg=BG).pack(pady=18)
 
-if __name__ == '__main__':
-    root = tk.Tk()
+if __name__=='__main__':
+    root=tk.Tk()
     Game(root)
     root.mainloop()
